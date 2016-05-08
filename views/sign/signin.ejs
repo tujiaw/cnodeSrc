@@ -10,15 +10,15 @@
 		</div>
 		<div class="inner">
 			<% if(typeof(error) != 'undefined' && error) { %>
-			<div class="alert alert-error">
-				<strong><%= error %></strong>
-			</div>
+				<div class="alert alert-error">
+					<strong><%= error %></strong>
+				</div>
 			<% } %>
 
 			<% if(typeof(success) != 'undefined' && success) { %>
-			<div class="alert alert-error">
-				<strong><%= success %></strong>
-			</div>
+				<div id="alertSuccess" class="alert alert-error">
+					<strong><%= success %>，<span id="lastSecond">3</span>秒后退出。</strong>
+				</div>
 			<% } %>
 			<form action="/signin" method="post" id="signin_form" class="form-horizontal">
 				<div class="control-group">
@@ -34,10 +34,28 @@
 					</div>
 				</div>
 				<div class="form-actions">
-					<input type="submit" class="span-primary" value="登录">
+					<input id="loginButton" type="submit" class="span-primary" value="登录">
 					<input type="reset" class="span-info" value="重置表单">
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+
+<script>
+	$(function() {
+		if ($('#alertSuccess').length > 0) {
+			var totalSecond = 3;
+			var intervalId = setInterval(function() {
+				totalSecond -= 1;
+				if (totalSecond == 0) {
+					clearInterval(intervalId);
+					window.location.href = "/";
+				} else {
+					$('#lastSecond').text(totalSecond);
+				}
+
+			}, 1000);
+		}
+	})
+</script>
